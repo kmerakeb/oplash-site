@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% load static %}
+{% load comments %}
+{% block content %}
+<style>
+  content{
+    width: 100%;
+  }
+  #id_honeypot {
+    display: none;
+}
+textarea {
+    display: block;
+    border: 1px dotted gray;
+    width: 100%;
+    height: 120px;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+.ms-3 {
+    margin-left: 1rem !important;
+}
+.text-sm {
+    font-size: 0.7rem !important;
+} 
+</style>
+
+
+
+
+
+<div class="jumbotron jumbotron-fluid mt-5 mb-3">
+  <div class="container">
+    <h1 class="">{{article.title}}</h1>
+    <p class="lead">{{ article.summary}}</p>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+      <div class="col-lg-8">
+          <!-- Post content-->
+          <article>
+              <!-- Post header-->
+              <header class="">
+                  <!-- Post title-->
+           
+               
+                         <!-- Post meta content-->
+                         <div class="text-muted fst-italic mb-2 d-flex justify-content-between flex-nowrap">
+                          {% if article.author.image %}
+
+                          <div class=""><img class="rounded-circle" src="{{ article.author.image.url }}" width="30" height="30" style="border:1px solid gray">
+                            <small>{{article.author}}</small>
+                          </div>
+                            {% else %}
+                        
+                            <div><img class="rounded-circle" src="{% static '/img/profile.png' %}" width="30" height="30" alt="user profile image">
+                              <span>{{article.author}}</span>
+                            </div>
+                              {% endif %}
+                          <small>Posted {{ article.created|timesince }} ago </small>
+                        
+                          <small>{{article.get_readtime}} mins read time</small>
+                        </div>
+              </header>
+              <!-- Preview image figure-->
+              <figure class="mb-3"><img class="img rounded" src="{{article.thumbnail.url}}" class="img" width="100%" height="350" alt="article details image"></figure>
+
+                 <!-- Post categories-->
+
+
+                 <div class="mb-4">
+                   {% with tags=article.tags.all %}
+                  {% if tags %}
+                    <div class="tag-list">
+                      {% for tag in tags %}
+                        <div class="d-inline tag-default tag-pill tag-outline text-center">
+                          <a class="badge bg-secondary text-decoration-none link-light" href="{% url 'articles:list' %}?tag={{ tag.name }}">{{ tag }}</a>
+                          </div>
+                      {% endfor %}
+                        </div>
+                  {% endif %}
+                {% endwith %}
+                  
+                </div>
+              <!-- Post content-->
+              <section class="mb-5" style="width: 100%;">
+                {{ article.as_markdown|safe }}
+              </section>                   
+              <nav class="d-flex justify-content-center">
+                <ul class="pagination pagination-sm">
+                  {% if article.previous_article %}
+                  <li class="page-item">
+                    <a class="page-link text-dark" href="{{ article.previous_article.get_absolute_url }}"><p class="font-weight-bold"> « Previous</p>{{article.previous_article.title}}</a>
+                  </li>
+                  {% endif %}
+                    <!--   <li class="page-item">
+                    <a class="page-link" href="{{ article.previous_article.get_absolute_url }}">1</a></li>
+                  
+             <li class="page-item active">
+                    <span class="page-link">
+                      2
+                      <span class="sr-only">(current)</span>
+                    </span>
+                  </li>
+                  <li class="page-item"><a class="page-link" href="#">3</a></li>-->
+                  {% if article.next_article %}
+                  <li class="page-item float-end">
+                    <a class="page-link text-dark" href="{{ article.next_article.get_absolute_url }}"><p class="font-weight-bold">Next »</p>{{article.next_article.title}}</a>
+                  </li>
+                  {% endif %}
+                </ul>
+              </nav>
+          </article>
+
+          <section class="add-banner">
+            <div class="align-items-center my-3" >
+              <img class="img-fluid mx-auto d-block" src="{% static 'img/728x90-blue.png' %}"  alt="Addvertisement">
+            </div>
+          </section>
+          <!-- Comments section-->
+          <section class="mb-5">
+            {% get_comment_count for article as comment_count %}
+
+            <p>This event has {{ comment_count }} comments.</p>
+
+              <div class="card bg-light" style="background-color:white; border: 0 solid white;">
+                  <div class="card-body" style="background-color:white; border: 0 solid white;">
+                      <!-- Comment form-->
+                      <div class="card comment-form" style="background-color:white; border: 0 solid white;" {% if comment %}action="{% url 'edit_comment' comment.id %}"{% endif %}>
+                        {% if user.is_authenticated %}
+                        {% get_comment_form for object as form %}
+                        <form action="{% comment_form_target %}" method="POST">
+                          <div class="card-block">
+                        {% csrf_token %}
+                        {{ form.comment }}
+                        {{ form.honeypot }}
+                        {{ form.content_type }}
+                        {{ form.object_pk }}
+                        {{ form.timestamp }}
+                        {{ form.security_hash }}
+                        </div>
+                        <div class="">
+                        <input type="hidden" name="next"/>
+                        <Button type="submit" class="btn btn-light float-end" id="id_submit"> Post Comment </button>
+                          </div>
+                        </form>
+                    {% else %}
+                    <div class="d-flex justify-content-between">
+                        <p>Please <a href="{% url 'login' %}">log in</a> to leave a comment.</p>
+                    or
+                    <p><a href="{% url 'register' %}">sign up</a>
+                    to add comments on this article.</p>
+                    </div>
+                  {% endif %}
+                      </div>
+
+                      <!-- Comment with nested comments-->
+                      {% get_comment_list for article as comment_list %}
+                      {% for comment in comment_list %}
+                      
+                      <div class="d-flex mb-4">
+                          <!-- Parent comment-->
+                          <div class="flex-shrink-0">
+                            {% if comment.user.image %}
+                            <img class="rounded-circle" src="{{ comment.user.image.url }}" width="30" height="30" style="border:1px solid gray">
+                            {% else %}
+                            <img class="rounded-circle"  src="{% static '/img/profile.png' %}" width="30" height="30" alt="profile image">
+                            {% endif %}
+                          </div>
+                          <div class="ms-3 comment-text">
+                              <div class="fw-bold">{{ comment.user.get_full_name }}</div>
+                              {{ comment.comment|linebreaksbr }}
+                              <!-- Child comment 1-->
+                         
+                          </div>
+                      </div>
+                  {% endfor %}
+                  </div>
+              </div>
+
+              {% for comment in comment_list %}
+    <a name="c{{ comment.id }}"></a>
+    <a href="{% get_comment_permalink comment %}">
+        permalink for comment #{{ forloop.counter }}
+    </a>
+    ...
+{% endfor %}
+          </section>
+
+      
+          <section>
+            <h3 class="h4">Articles you may be interested in</h3>
+            <div class="row my-5">
+            {% for object in related %}
+          
+            <div class="col-md-6">
+            <div class="row mb-3">
+        
+            <div class="text col-lg-7">
+           
+              <div class="text-inner d-flex align-items-center">
+                <div class="content">
+                  <header class="post-header" style="margin-bottom: 10px;">
+                    {% for tag in tags %}
+                    <div class="category">
+                    
+                    </div>
+                    {% endfor %}
+                    <h4 class="h6"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h4>
+                  </header>
+    
+                  <p class="overview">{{ object.summary | truncatechars:70}}</p>
+        <!--
+                  <footer class="post-footer d-flex align-items-center" style="margin-top: 30px;">
+                    <a class="author d-flex align-items-center flex-wrap">
+                      <div class="avater" style="max-width: 40px;
+                    min-width: 30px;
+                    height: 30px;
+                    overflow: hidden;
+                    border-radius: 50%;
+                    margin-right: 3px;">
+                        {% if article.author.image %}
+    
+                        <div class=""><img class="rounded-circle" src="{{ article.author.image.url }}" width="30" height="30" style="border:1px solid gray">
+                          <small>{{article.author}}</small>
+                        </div>
+                          {% else %}
+                      
+                          <div><img class="rounded-circle" src="{% static '/img/profile.png' %}" width="30" height="30" alt="user profile image">
+                            <span>{{article.author}}</span>
+                          </div>
+                            {% endif %}
+    
+                    </div>
+                  
+                    <div class="title">
+                      <span> {{object.author}} </span>
+                    </div>
+                    </a>
+                
+                    <div class="date"> 
+                      <i class="bi-clock"></i> {{ object.created}}
+                    </div>
+             
+                  </footer>
+                       -->
+                </div>
+              </div>
+    
+    
+            </div>
+            <div class="image col-lg-5">
+           
+              <a class="d-block" href="{{ object.get_absolute_url }}"><img class="bd-placeholder-img img-fluid w-100 card-img-top " src="{{ object.thumbnail.url }}" alt="latest article image"></a> 
+            </div>
+            </div>
+            </div>
+          
+            {% endfor %}
+            </div>
+           
+          </section>
+      </div>
+      <!-- Side widgets-->
+      <div class="col-lg-4">
+          <!-- Search widget-->
+          <div class="card mb-4">
+              <div class="card-header">Search</div>
+              <div class="card-body">
+                <form action="{% url 'search' %}" class="d-flex" role="search">
+                  <div class="input-group">
+                  
+                    <input class="form-control me-2" type="text" name="s" placeholder="Search" aria-label="Search">
+                      <button class="btn btn-outline-primary" type="submit"><i class="bi-search" role="img" aria-label="Search"></i></button>
+                      
+                  </div>
+                </form>
+              </div>
+          </div>
+          <!-- Categories widget-->
+          <div class="card mb-4">
+              <div class="card-header">Categories</div>
+              <div class="card-body">
+                  <div class="row overflow-scroll" style="height: 200px;">
+                   
+                          <ul class="list-unstyled mb-0">
+                            {% for tag in tags %}
+                              <li><a class="text-dark badge badge-pill badge-secondary" href="{% url 'articles:list' %}?tag={{ tag.name }}" >{{tag}}</a></li>
+                              {% endfor %}
+                             
+                          </ul>
+                   
+                  </div>
+              </div>
+          </div>
+          <!-- Side widget-->
+          <div class="card mb-4">
+              <div class="card-header">Side Widget</div>
+              <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+          </div>
+          <div class="card mb-4 border-0">
+            <img class="img-fluid rounded-3 mx-auto d-block" src="{% static 'img/300x600.png' %}"  alt="Addvertisement">
+          </div>
+
+          <div class="card mb-4 border-0">
+            <img class="img-fluid mx-auto d-block" src="{% static 'img/160x600.png' %}"  alt="Addvertisement">
+          </div>
+        
+
+      </div>  <!--End Side Bar-->
+
+
+
+  </div>
+</div>
+
+<!--
+
+    <div class="d-flex justify-content-left row">
+          <div class="col-md-8">
+              <div class="d-flex flex-column comment-section">
+                            
+  {% if user.is_authenticated %}
+
+  {% include "oplash/comments/comment_form.html" with form=comment_form %}
+  
+{% else %}
+<p style="text-align:center">
+  <a href="{% url 'login' %}">Sign in</a>
+  or
+  <a href="{% url 'register' %}">sign up</a>
+  to add comments on this article.
+</p>
+{% endif %}
+{% for comment in comments %}
+<div>
+  {% include "oplash/comments/comment.html" %}
+</div>
+{% endfor %}
+
+            </div>
+          </div>
+        </div>
+  
+      -->
+ 
+ <!--End of Main Details Page Container-->
+
+{% endblock %}
+

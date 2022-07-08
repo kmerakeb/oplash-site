@@ -1,0 +1,68 @@
+{% load static %}
+{% load comments %}
+<div class="col-lg-6 col-md-4">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      {% get_comment_count for article as comment_count %}
+
+      <div class="comment"><i class="bi-chat"></i> {{ comment_count}}</div>
+      <small class="text-muted">{{article.get_readtime}} mins</small>
+    </div>
+    <a class="text-black" href="{{ article.get_absolute_url }}"><img class="bd-placeholder-img card-img-top"
+        src="{{ article.thumbnail.url }}" width="100%" height="225" alt="article image"></a>
+
+    <div class="card-body">
+      <h4 class="card-text"><a class="text-black" href="{{ article.get_absolute_url }}">{{ article.title | truncatechars:55}}</a></h4>
+      <p class="card-text">{{ article.summary | truncatechars:70 }} </p>
+
+      <footer class="post-footer d-flex justify-content-between align-items-center" style="margin-top: 30px;">
+        <a class="author d-flex align-items-center flex-nowrap">
+          <div class="avater" style="max-width: 30px;
+        min-width: 30px;
+        height: 30px;
+        overflow: hidden;
+        border-radius: 50%;
+        margin-right: 3px;">
+            {% if article.author.image %}
+
+            <div class=""><img class="rounded-circle" src="{{ article.author.image.url }}" width="30" height="30"
+                style="border:1px solid gray">
+              <small>{{article.author}}</small>
+            </div>
+            {% else %}
+
+            <div><img class="rounded-circle" src="{% static '/img/profile.png' %}" width="30" height="30"
+                alt="user profile image">
+              <span>{{article.author}}</span>
+            </div>
+            {% endif %}
+
+          </div>
+
+          <div class="title"><span><em> {{article.author}} </em></span></div>
+        </a>
+        <div class="date"> <i class="bi-clock"></i> {{ article.created | timesince}} ago</div>
+
+
+        <div class="btn-group">
+          <!--<a href="{{ article.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>-->
+          <!--<a href="{{ article.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi-heart"></i></button></a>-->
+          {% include "oplash/articles/partials/small_favorite_btn.html" with num_favorites=article.num_favorites is_favorite=article.is_favorite %}
+
+        </div>
+
+      </footer>
+      <!-- {% with tags=article.tags.all %}
+        {% if tags %}
+          <div class="card-footer">
+            {% for tag in tags %}
+              <small class="text-muted">
+                <a class="text-muted" href="{% url 'articles:list' %}?tag={{ tag.name }}">{{ tag }} |</a>
+              </small>
+            {% endfor %}
+            </div>
+        {% endif %}
+      {% endwith %}-->
+    </div>
+  </div>
+</div>

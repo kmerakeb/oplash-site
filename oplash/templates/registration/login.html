@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% load widget_tweaks %}
+
+{% block content %}
+  <!--<div class="auth-page my-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 col-xs-12">
+          <h1 class="text-xs-center">Sign up</h1>
+          <p class="text-xs-center">
+            <a href="{% url 'register' %}">Don't have an account?</a>
+          </p>
+
+          {% if form.errors %}
+            <ul class="error-messages">
+              {% for error in form.errors.values %}
+                {{ error.as_text }}
+              {% endfor %}
+            </ul>
+          {% endif %}
+
+          <form action="{% url 'login' %}" method="post">
+            {% csrf_token %}
+            {% with WIDGET_CLASS="form-control form-control-lg" %}
+              <fieldset class="form-group">
+                {% render_field form.username placeholder="Email" class+=WIDGET_CLASS %}
+              </fieldset>
+              <fieldset class="form-group">
+                {% render_field form.password placeholder="Password" class+=WIDGET_CLASS %}
+              </fieldset>
+            {% endwith %}
+            <button type="submit" class="btn btn-lg btn-primary pull-xs-right">Sign in</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>-->
+
+
+  <div class="container col-xl-10 col-xxl-8 px-4 py-5 mb-5">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-6 text-center text-lg-start">
+        <h4 class="display fw-bold lh-1 mb-3">Sign In</h4>
+        <small class="col-lg-10 fs-4">Login to comment on articles and bookmark your favorite posts for later reviews</small>
+      </div>
+      <div class="col-md-10 mx-auto col-lg-6">
+        {% if form.errors %}
+        <ul class="error-messages">
+          {% for error in form.errors.values %}
+            {{ error.as_text }}
+          {% endfor %}
+        </ul>
+      {% endif %}
+        <form class="p-4 p-md-5 border rounded-3 bg-light"  action="{% url 'login' %}" method="post">
+          {% csrf_token %}
+          {% with WIDGET_CLASS="form-control form-control-lg" %}
+            <fieldset class="form-group mb-3">
+              {% render_field form.username placeholder="Email" class+=WIDGET_CLASS %}
+            </fieldset>
+            <fieldset class="form-group mb-3">
+              {% render_field form.password placeholder="Password" class+=WIDGET_CLASS %}
+            </fieldset>
+          {% endwith %}
+          <button type="submit" class="btn btn-lg btn-outline-secondary pull-xs-right">Sign in</button>
+          <hr class="my-4">
+          <!--<p class="text-xs-center">Sign up</p>-->
+          <p class="text-xs-center">
+            <a href="{% url 'register' %}">Don't have an account?</a>
+          </p>
+          <small class="text-muted">By clicking Sign up, you agree to the terms of use.</small>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

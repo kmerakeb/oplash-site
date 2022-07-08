@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+{% load static %}
+{% load comments %}
+{% block content %}
+
+<style>
+  .text-sm {
+    font-size: 0.7rem !important;
+  }
+
+  .reset-anchor {
+    color: inherit;
+    transition: all 0.3s;
+  }
+
+  .lh-sm {
+    line-height: 1.25 !important;
+  }
+
+  .mb-0 {
+    margin-bottom: 0 !important;
+  }
+
+  .ms-3 {
+    margin-left: 1rem !important;
+  }
+
+  .card-body {
+    flex: 1 1 auto;
+    padding: 1rem 1rem;
+  }
+
+  .p-0 {
+    padding: 0 !important;
+  }
+
+  h6,
+  .h6 {
+    font-size: 1rem;
+  }
+
+  .card {
+    border: 0 solid rgba(0, 0, 0, .125);
+    border-radius: 0;
+  }
+
+  .card-text-responsive {
+    font-size: calc(100% + 1vw + 1vh);
+  }
+</style>
+
+<header class="bg-dark py-5 mb-5">
+  <div class="container px-5">
+
+    <div class="row gx-5 align-items-center justify-content-center">
+      <div class="col-lg-8 col-xl-7 col-xxl-6">
+
+        <div class="my-5 text-center text-xl-start">
+          <h1 class="display-5 fw-bolder mb-2"><a class="text-white" href="">Stay Curious | Learn Something New</a></h1>
+          <p class="lead fw-normal text-white-50 mb-4">Algorithms an Time Parallelization. An intrinsic approach to an
+            indepth undestanding of algorithms and their applications and their role in new emergin technologies.</p>
+          <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+            <header class="post-header" style="margin-bottom: 10px;">
+
+              <div class="category">
+                <!--<a  class="text-white" href="{% url 'articles:list' %}?tag={{ tag.name }}" class="tag-pill tag-default">{{ tag }}</a>-->
+              </div>
+
+              <!--<h4 class="h4"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h4>-->
+            </header>
+          </div>
+        </div>
+      </div>
+      <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5"
+          src="{% static 'img/ai-imag02.jpg' %}" alt="..."></div>
+    </div>
+
+  </div>
+</header>
+<section>
+  <div class="container">
+    <div class="row d-flex aligne-items-stretch">
+      <h4 class="text-center"> Aquiring knowledge is Inherently rewarding and pleasurable</h4>
+      <div class="my-3 py-3 d-flex">
+        <div class="col-md-6 col-lg-8">
+          <h4 class="font-weight-bold">Posts</h4>
+        </div>
+        <!-- Search bar -->
+        <div class="col-md-6 col-lg-4">
+          <form action="{% url 'search' %}" class="d-flex" role="search">
+            <input class="form-control me-2" type="text" name="s" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-primary" type="submit"><i class="bi-search" role="img" aria-label="Search"></i></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-9">
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          {% for article in articles %}
+          {% include "oplash/articles/partials/article.html" %}
+          {% empty %}
+          <div class="article-preview">No articles are here... yet.</div>
+          {% endfor %}
+
+        </div>
+        <!--
+
+    
+          <div class="album bg-white">
+         
+          
+              <h2 class="p-3 my-5 bg-dark text-white"> Featured Articles</h2>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-3">
+                  {% for article in featured %}
+                  <div class="col-lg-6 col-md-6">
+                    <div class="card shadow-sm">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                        {% get_comment_count for article as comment_count %}
+                
+                        <div class="comment"><i class="bi-chat"></i>  {{ comment_count}}</div>
+                        <small class="text-muted">{{article.get_readtime}} mins</small>
+                      </div>
+                      <a class="text-black" href="{{ article.get_absolute_url }}"><img class="bd-placeholder-img card-img-top" src="{{ article.thumbnail.url }}" width="100%" height="225" alt="article image"></a>
+                  
+                      <div class="card-body">
+                        <h4 class="card-text"><a class="text-black" href="{{ article.get_absolute_url }}">{{ article.title | truncatechars:45}}</a></h4>
+                        <p class="card-text">{{ article.summary | truncatechars:70 }} </p>
+                      
+                       <footer class="post-footer d-flex justify-content-between align-items-center" style="margin-top: 30px;">
+                        <a class="author d-flex align-items-center flex-wrap">
+                          <div class="avater" style="max-width: 30px;
+                        min-width: 30px;
+                        height: 30px;
+                        overflow: hidden;
+                        border-radius: 50%;
+                        margin-right: 3px;">
+                           {% if article.author.image %}
+                
+                           <div class=""><img class="rounded-circle" src="{{ article.author.image.url }}" width="30" height="30" style="border:1px solid gray">
+                             <small>{{article.author}}</small>
+                           </div>
+                             {% else %}
+                         
+                             <div><img class="rounded-circle" src="{% static '/img/profile.png' %}" width="30" height="30" alt="user profile image">
+                               <span>{{article.author}}</span>
+                             </div>
+                               {% endif %}
+                
+                        </div>
+                      
+                        <div class="title"><span><em> {{article.author}} </em></span></div>
+                        </a>
+                        <div class="date"> <i class="bi-clock"></i> {{ article.created | timesince}} ago</div>
+                      
+                
+                        <div class="btn-group">
+                      
+                          {% include "oplash/articles/partials/small_favorite_btn.html" with num_favorites=article.num_favorites is_favorite=article.is_favorite %}
+                          
+                        </div>
+                
+                      </footer>
+                
+                      </div>
+                    </div>
+                  </div>
+                {% empty %}
+                  <div class="article-preview">No articles are here... yet.</div>
+                {% endfor %}
+      
+            
+            </div>
+            </div> 
+ 
+          -->
+
+        <div class="row my-4 p-3">
+          <img class="img-fluid mx-auto d-block" src="{% static 'img/728x90-blue.png' %}" alt="Addvertisement">
+        </div>
+
+      </div>
+      <!--side bar-->
+      <div class="col-lg-3" style="border-left: 1px solid rgb(227, 227, 227);">
+        <div class="card mb-4 py-lg-4">
+          <div class="card-body text-center">
+            <h2 class="h5 mb-3">Featured Post</h5>
+              {% for obj in featured %}
+              <a href="{{obj.get_absolute_url}}" ><img class="rounded-cire mb-3" src="{{obj.thumbnail.url}}" alt="..." width="100"></a>
+              <h6><a href="{{obj.get_absolute_url}}" class="text-dark"> {{obj.title}} </a></h6>
+              <p class="text-sm text-muted">{{obj.summary}}</p>
+              <ul class="list-inline small mb-3 text-dark">
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-facebook"></i></a></li>
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-twitter"></i></a></li>
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-github"></i></a></li>
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-instagram"></i></a></li>
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-linkedin"></i></a></li>
+                <li class="list-inline-item"><a class="reset-anchor" href="#!"><i class="bi-youtube"></i></a></li>
+              </ul>
+              {% endfor %}
+          </div>
+        </div>
+
+        <div class="card my-4">
+          <div class="card-body p-0">
+            <h5 class="mb-3">Recent Posts</h5>
+            {% for object in latest %}
+            <div class="d-flex mb-3">
+              <a class="flex-shrink-0" href="{{object.get_absolute_url}}"> <img class="img-fluid"
+                  src="{{ object.thumbnail.url }}" width="70" alt="article categories"></a>
+              <div class="ms-3">
+                <h6><a class="reset-anchor" href="{{object.get_absolute_url}}"> {{object.title | truncatechars:70}}</a>
+                </h6>
+                <p class="text-sm text-muted mb-0 lh-sm">{{object.summary | truncatechars:70}}</p>
+              </div>
+            </div>
+
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="p-3 overflow-scroll my-4" style="height: 200px;">
+          <h4 class="">All Topics </h4>
+          {% for tag in tags %}
+          <a href="{% url 'articles:list' %}?tag={{ tag.name }}" class="badge badge-pill badge-secondary text-black">
+            {{ tag }}
+          </a>
+          {% endfor %}
+        </div>
+
+        <div class="align-items-center my-4" style="border: 1px solid gray;">
+          <img class="img-fluid mx-auto d-block" src="{% static 'img/320x250.png' %}" alt="Addvertisement">
+        </div>
+      </div>
+      <!--End Side Bar-->
+    </div>
+  </div>
+  <!--End Container -->
+</section>
+
+
+<section class="mb-5" style="background-color:#3e3eff; ">
+  <div class="container">
+    <div
+      class="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start py-5">
+      <div class="mb-4 mb-xl-0">
+        <div class="fs-3 fw-bold text-white">Subscribe for new posts.</div>
+        <div class="text-white-50">Receive our newsletters and latest updates.</div>
+      </div>
+      <div class="ms-xl-4">
+        <div class="input-group mb-2">
+          <input class="form-control" type="text" placeholder="Email address..." aria-label="Email address..."
+            aria-describedby="button-newsletter">
+          <button class="btn btn-outline-light" id="button-newsletter" type="button">Sign up</button>
+        </div>
+        <div class="small text-white-50">We care about privacy, and will never share your data.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+{% endblock%}

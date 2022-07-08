@@ -1,0 +1,28 @@
+
+{% load static %}
+<header class="bg-dark py-5 mb-5">
+    <div class="container px-5">
+    
+        <div class="row gx-5 align-items-center justify-content-center">
+            <div class="col-lg-8 col-xl-7 col-xxl-6">
+               
+                <div class="my-5 text-center text-xl-start">
+                    <h1 class="display-5 fw-bolder mb-2"><a class="text-white" href="">Stay Curious and on Track</a></h1>
+                    <p class="lead fw-normal text-white-50 mb-4">Algorithms an Time Parallelization. An intrinsic approach to an indepth undestanding of algorithms and their applications and their role in new emergin technologies</p>
+                    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
+                        <header class="post-header" style="margin-bottom: 10px;">
+                           
+                            <div class="category">
+                               <!--<a  class="text-white" href="{% url 'articles:list' %}?tag={{ tag.name }}" class="tag-pill tag-default">{{ tag }}</a>-->
+                            </div>
+                      
+                            <!--<h4 class="h4"><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></h4>-->
+                          </header>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="{% static 'img/ai-imag02.jpg' %}"  alt="..."></div>
+        </div>
+     
+    </div>
+</header>

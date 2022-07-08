@@ -1,0 +1,61 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Oplash - Lnading Page</title>
+  <meta name="description" content="">
+
+  <meta name="robots" content="all,follow">
+
+
+  <link rel="stylesheet" href="{% static 'oplash/dist/css/bootstrap.min.css' %}" />
+  <link rel="stylesheet" href="{% static 'oplash/dist/style.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'oplash/dist/icons/font/bootstrap-icons.css' %}" />
+  <link rel="stylesheet" href="{% static 'oplash/dist/carosel.css' %}" type="text/css">
+
+
+</head>
+
+<body>
+
+  {% include "partials/header.html" %}
+
+
+  {% block content %}{% endblock %}
+
+  {% include "partials/footer.html" %}
+
+  
+  <script>
+    tinymce.init({
+      selector: 'textarea',  // change this value according to your HTML
+      menu: {
+        file: { title: 'File', items: 'newdocument restoredraft | preview | print ' },
+        edit: { title: 'Edit', items: 'undo redo | cut copy paste | selectall | searchreplace' },
+        view: { title: 'View', items: 'code | visualaid visualchars visualblocks | spellchecker | preview fullscreen' },
+        insert: { title: 'Insert', items: 'image link media template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor toc | insertdatetime' },
+        format: { title: 'Format', items: 'bold italic underline strikethrough superscript subscript codeformat | formats blockformats fontformats fontsizes align lineheight | forecolor backcolor | removeformat' },
+        tools: { title: 'Tools', items: 'spellchecker spellcheckerlanguage | code wordcount' },
+        table: { title: 'Table', items: 'inserttable | cell row column | tableprops deletetable' },
+        help: { title: 'Help', items: 'help' }
+      }
+    });
+  </script>
+
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+
+  <script src="{% static 'oplash/dist/js/bootstrap.bundle.min.js' %}"></script>
+
+
+</body>
+
+</html>

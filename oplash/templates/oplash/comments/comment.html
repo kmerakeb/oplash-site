@@ -1,0 +1,100 @@
+{% load static %}
+
+<style>
+  .card-footer {
+
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
+}
+ .comment{
+        font-size: 0.8em;
+        font-weight: 400;
+        color: #999;
+    }
+  .comment::before{
+  content: '|';
+  display: inline-block;
+  margin: 0 7px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+.date::after{
+  content: '|';
+  display: inline-block;
+  margin: 0 7px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+.title::after{
+  content: '|';
+  display: inline-block;
+  margin: 0 7px;
+  font-size: 0.9em;
+  color: #ccc;
+}
+      .date{
+        font-size: 0.8em;
+        font-weight: 400;
+        color: #999;
+      }
+      .title{
+        font-size: 0.8em;
+        font-weight: 400;
+        color: #999;
+      }
+      .inner-text{
+        padding: 70px 30px;
+        height: 100%;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;   
+      }
+      .category a {
+  color: #999;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-size: 13px;
+}
+a, i, span {
+  display: inline-block;
+  text-decoration: none;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.image img {
+  height: 100%;
+}
+
+.col-lg-6{
+  flex: 0 0 auto;
+  width: 50%;
+}
+</style>
+<div class="bg-light card">
+  {% if comment.author.image %}
+  <div class="d-flex flex-row user-info px-3"><img class="rounded-circle" src="{{ comment.author.image.url }}" width="30" height="30" style="border:1px solid gray">
+    {% else %}
+
+    <div class="d-flex flex-row user-info"><img class="rounded-circle" src="{% static '/img/profile.png' %}" width="30" height="30" alt="user profile image">
+      {% endif %}
+      <div class="d-flex flex-column justify-content-start px-2"><span class="d-block font-weight-bold name comment-text text-black">{{ comment.author.get_full_name }}</span><span class="comment-text">{{ comment.created|date:"F j, Y" }}</span>
+      </div>
+  </div>
+  <div class="mt-2">
+      <p class="comment-text px-5">{{ comment.content|linebreaksbr }}</p>
+  </div>
+
+  {% if user.is_authenticated and user == comment.author %}
+  <div class="card-footer">
+    <form action="{% url 'comments:delete' comment.id %}" method="post" up-confirm="Really delete?">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-link float-end">
+        <i class="bi-trash" role="img" aria-label="trash" style="color:gray;"></i>
+      </button>
+    </form>
+  </div>
+{% endif %}
+</div>
+</div>

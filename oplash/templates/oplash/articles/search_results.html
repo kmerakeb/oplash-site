@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<style>
+    .search{
+        margin-bottom: 40px;
+        padding: 30px;
+        border: 1px solid #eee;
+    }
+
+
+</style>
+<section class="py-3">
+
+
+    <div class="album py-5 bg-light">
+        <div class="container">
+        <div class="row my-3">
+     
+            <div class=" col-9 py-2" style="background-color:  rgb(248, 249, 250)">
+                <h4 class="text-center"> Search Results  ...</h4>
+            </div>
+            <div class="col-3 py-2 search"">
+                <form action="{% url 'search' %}" class="d-flex" role="search">
+                    <input class="form-control me-2" type="text"  name="s" placeholder="Search" aria-label="Search">
+                   <button class="btn btn-outline-success" type="submit"><i class="bi-search" role="img" aria-label="Search"></i></button>
+                  </form>
+            </div>
+            </div>
+
+        </div>
+      
+       <div class="container">
+      
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            
+            {% for article in queryset %}
+            <div class="col">
+                <div class="card shadow-sm">
+                  <img class="bd-placeholder-img card-img-top" src="{{ article.thumbnail.url }}" width="100%" height="225" alt="article image">
+              
+                  <div class="card-body">
+                    <h4 class="card-text">{{ article.title | truncatechars:45}}</h4>
+                    <p class="card-text">{{ article.summary | truncatechars:70 }} </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <a href="{{ article.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                        <a href="{{ article.get_absolute_url }}"><button type="button" class="btn btn-sm btn-outline-secondary"><i class="bi-heart"></i></button></a>
+                        
+                      </div>
+                      <small class="text-muted">{{article.get_readtime}} mins</small>
+                   
+                   </div>
+                   <!-- {% with tags=article.tags.all %}
+                    {% if tags %}
+                      <div class="card-footer">
+                        {% for tag in tags %}
+                          <small class="text-muted">
+                            <a class="text-muted" href="{% url 'articles:list' %}?tag={{ tag.name }}">{{ tag }} |</a>
+                          </small>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+                  {% endwith %}-->
+                  </div>
+                </div>
+              </div>
+          {% empty %}
+            <div class="article-preview">No articles found for the search results</div>
+          {% endfor %}
+
+          </div>
+      
+      </div>
+      </div> 
+   
+</section>
+
+
+
+{% endblock %}

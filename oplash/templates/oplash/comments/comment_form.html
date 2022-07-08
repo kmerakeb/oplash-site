@@ -1,0 +1,22 @@
+{% load widget_tweaks %}
+{% load static %}
+
+<form class="card comment-form" {% if comment %}action="{% url 'edit_comment' comment.id %}"{% endif %} method="post">
+  {% csrf_token %}
+
+  <div class="card-block">
+    {% render_field form.content placeholder="Write a comment..." class+="form-control" rows=3 %}
+  </div>
+  <div class="card-footer">
+    {% if user.image %}
+      <img  style="border:1px solid gray" src="{{ user.image.url }}" class="rounded-circle" width="30px" height="30" alt="user image" />
+    {% else %}
+    <img  style="border:1px solid gray" class="rounded-circle" src="{% static '/img/profile.png' %}" width="30px" height="30" alt="user image" />
+    {% endif %}
+    <button type="submit" class="btn btn-sm btn-outline-secondary float-end">
+      {{ comment|yesno:'Save,Post' }} Comment
+    </button>
+  </div>
+</form>
+
+

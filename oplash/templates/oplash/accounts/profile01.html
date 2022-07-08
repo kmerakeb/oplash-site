@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="profile-page">
+  <div class="user-info">
+    <div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-md-10 offset-md-1">
+          {% if profile.image %}
+            <img src="{{ profile.image.url }}" class="user-img" width="200" height="200" alt="profile image"  />
+          {% else %}
+          <img class="rounded-circle" src="{% static '/img/profile.png' %}" width="40" alt="profile image" />
+          {% endif %}
+          <h4>{{ profile.name }}</h4>
+          <p>{{ profile.bio }}</p>
+          {% if user == profile %}
+            <a href="{% url 'settings' %}" class="btn btn-sm btn-outline-secondary action-btn">
+              <span>
+                <i class="ion-gear-a"></i>
+              </span>
+              <span>Edit Profile Settings</span>
+            </a>
+            ..
+            {% if user.is_staff or user.is_superuser %}
+              <a href="{% url 'admin:index' %}" target="_blank" class="btn btn-sm btn-outline-secondary action-btn" style="margin:0 3px">
+                <span>
+                  <i class="ion-gear-a"></i>
+                </span>
+                <span>Dashboard</span>
+              </a>
+            {% endif %}
+          {% else %}
+            <div class="pull-xs-right">
+              {% include "oplash/accounts/partials/follow_btn.html" with followed=profile %}
+            </div>
+          {% endif %}
+          <div class="pull-xs-left">
+            <a href="#">
+              <b>Following: {{ profile.followers.count }}</b>
+            </a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="#">
+              <b>Followers: {{ profile.following.count }}</b>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-md-10 offset-md-1">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        
+          <li class="nav-item" role="presentation">
+            <button href="{{ request.path }}" class="nav-link{% if not 'favorites' in request.get_full_path %} active{% endif %}" class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">
+            
+            </button>
+          </li>
+         
+          {% if user == profile %}
+          <li class="nav-item" role="presentation">
+            <a href="{{ request.path }}?favorites" class="nav-link{% if 'favorites' in request.get_full_path %} active{% endif %}" class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Favorited Articles</button>
+          </li>
+          {% endif %}
+        </ul>
+
+
+        <div class="tab-content" id="myTabContent">
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            
+            <li class="nav-item">
+             <a href="{{ request.path }}" class="nav-link{% if not 'favorites' in request.get_full_path %} active{% endif %}">
+                {% if user == profile %}
+                  <span>My Articles</span>
+                {% else %}
+                  <span>Articles</span>
+                {% endif %}
+              </a>
+            </li>
+           
+              <li class="nav-item">
+                <!--<a href="{{ request.path }}?favorites" class="nav-link{% if 'favorites' in request.get_full_path %} active{% endif %}">Favorited Articles</a>-->
+              </li>
+         
+
+            
+          </div>
+        <!-- <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <ul class="nav nav-pills outline-active">
+              <li class="nav-item">
+                <a href="{{ request.path }}" class="nav-link{% if not 'favorites' in request.get_full_path %} active{% endif %}">
+                  {% if user == profile %}
+                    <span>My Articles</span>
+                  {% else %}
+                    <span>Articles</span>
+                  {% endif %}
+                </a>
+              </li>
+              {% if user == profile %}
+                <li class="nav-item">
+                  <a href="{{ request.path }}?favorites" class="nav-link{% if 'favorites' in request.get_full_path %} active{% endif %}">Favorited Articles</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>-->
+
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+        </div>
+        
+<!--
+        <div class="articles-toggle">
+          <ul class="nav nav-pills outline-active">
+            <li class="nav-item">
+              <a href="{{ request.path }}" class="nav-link{% if not 'favorites' in request.get_full_path %} active{% endif %}">
+                {% if user == profile %}
+                  <span>My Articles</span>
+                {% else %}
+                  <span>Articles</span>
+                {% endif %}
+              </a>
+            </li>
+            {% if user == profile %}
+              <li class="nav-item">
+                <a href="{{ request.path }}?favorites" class="nav-link{% if 'favorites' in request.get_full_path %} active{% endif %}">Favorited Articles</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      -->
+
+        {% for article in articles %}
+          {% include "oplash/articles/partials/article.html" %}
+        {% empty %}
+          <div class="article-preview">No articles are here... yet.</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

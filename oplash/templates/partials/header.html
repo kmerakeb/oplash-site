@@ -1,0 +1,83 @@
+{% load static %}
+<header class="header">
+    <div class="navbar-fixed-top mb-1" style="background-color: rgb(248, 249, 250); border: 1px solid #eee;">
+        <div class="container" style="background-color: rgb(248, 249, 250);">
+            <nav class="navbar navbar-expand-lg navbar-light position-relative">
+             <a  class="" href="{% url 'articles:list' %}"> <img class="" src="{% static '/img/oplash_logo_dark_100.png' %}" width="70"></a>
+               <!-- <h4><a  class="mx-1" href="{% url 'articles:list' %}" style="color: Black; font-weight: 700;">Zetasim</a></h4>-->
+       
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarnav" aria-controls="navbarnav" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarnav">
+                  {% with url_name=request.resolver_match.url_name %}
+                  <ul class="navbar-nav ms-lg-auto">
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'articles:list' %}">Home <span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'articles:list' %}">Videos <span class="sr-only"></span></a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item active">
+                      <a class="nav-link" href="{% url 'articles:create' %}">New Aricle <span class="{% if url_name == 'create' %} active{% endif %}"></span></a>
+                    </li>
+                  
+                  
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle-false" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        
+                            {% if user.image %}
+                              <img src="{{ user.image.url}}" class="rounded-circle" width="26px" height="100%" alt="author image" />
+                            
+                            {% else %}
+                              <img src="{% static 'img/profile.png' %}" class="rounded-circle" width="25px" height="25px" alt="author image"  />
+                            {% endif %}
+                            <small><span>{{ user.name }}</span></small>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                          <li><a href="{{ user.get_absolute_url }}" class=" dropdown-item {% if url_name == 'profile' %} active{% endif %}">Profile</a></li>
+                          <li><a class="dropdown-item" href="{% url 'logout' %}">Log Out</a></li>
+                          <li>
+                            <hr class="dropdown-divider">
+                          </li>
+                          <li>  <a href="{% url 'settings' %}" class="dropdown-item">Settings</a></li>
+                        </ul>
+                      
+                      </li>
+
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'register' %}">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="{% url 'login' %}">Sign In</a>
+                    </li>
+                    {% endif %}
+                  </ul>
+                  {% endwith %}
+                  <span class="navbar-text slid-line"> </span>
+                </div>
+              </nav>
+        </div>
+
+    </div>
+   <!-- <div class="intro-header py-5 text-white" style="background-color: gray;">
+        <div class="container position-relative">
+            <div class="row g-2 g-lg-3">
+                <div class="col12 col-md-auto">
+                    <img  src="{% static '/img/intro-image.png' %}" alt="..." class="img-intro align-center img-thumbnail" width="200" height="200" style="margin-right: 1.5rem !important;">
+                </div>
+                <div class="col align-self-center">
+                    <h2> Zetasim machine learning hub</h2>
+                    <div class="page-heading tag-line mb-3">
+                        This is all you want to know about machine learning and the future of web development
+                        <br class="">
+                        Here everyting you want about web development
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>-->
+</header>
