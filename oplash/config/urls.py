@@ -22,7 +22,8 @@ from filebrowser.sites import site
 from django_comments.feeds import LatestCommentFeed
 
 urlpatterns = [
-    path('admin/filebrowser/', site.urls),
+     path('admin/filebrowser/', site.urls),
+    path('grappelli/', include('grappelli.urls')),
     path("", include("oplash.apps.articles.urls")),
     path("", include("oplash.apps.accounts.urls")),
     path("comments/", include("oplash.apps.comments.urls")),
