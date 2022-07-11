@@ -24,6 +24,21 @@ textarea {
 .text-sm {
     font-size: 0.7rem !important;
 } 
+/* TinyMCE table of conetent styling*/
+.mce-toc {
+  border: 1px solid gray;
+  padding: 20px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.mce-toc h2 {
+  margin: 4px;
+}
+
+.mce-toc li {
+  list-style-type:;
+}
 </style>
 
 
@@ -284,11 +299,11 @@ textarea {
           <div class="card mb-4">
               <div class="card-header">Categories</div>
               <div class="card-body">
-                  <div class="row overflow-scroll" style="height: 200px;">
+                  <div class="row" style="height: 200px;">
                    
-                          <ul class="list-unstyled mb-0">
+                          <ul class="mb-0 list-inline">
                             {% for tag in tags %}
-                              <li><a class="text-dark badge badge-pill badge-secondary" href="{% url 'articles:list' %}?tag={{ tag.name }}" >{{tag}}</a></li>
+                              <li class="list-inline-item badge badge-pill badge-secondary"><a class="text-dark" href="{% url 'articles:list' %}?tag={{ tag.name }}" >{{tag}}</a></li>
                               {% endfor %}
                              
                           </ul>
