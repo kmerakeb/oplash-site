@@ -148,32 +148,17 @@ DIRECTORY = ''
 # TINYMCE SETTINGS
 # ==============================================================================
 
-DEFAULT = {
-    'selector': 'textarea',
-    'theme': 'modern',
-     'plugins': "preview",
-  'menubar': "view",
-  'toolbar': "preview",
-    'plugins': 'link image preview codesample contextmenu table code lists emoticons',
-    'toolbar1': 'formatselect | bold italic underline | alignleft aligncenter alignright alignjustify '
-               '| bullist numlist | outdent indent | table | link image | codesample | preview code | emoticons',
-    'contextmenu': 'formats | link image',
-    'menubar': True,
-    'inline': True,
-    'statusbar': True,
-   
-}
-
 TINYMCE_DEFAULT_CONFIG = {
     
 
-  'plugins': "toolstable preview link image preview codesample contextmenu table code lists image lists code pagebreak emoticons media  mediaembed codesample anchor image imagetools insertdatetime link hr textcolor visualblocks nonbreaking fullscreen",
+  'plugins': "toc toolstable preview link image preview codesample contextmenu table code lists image lists code pagebreak emoticons media  mediaembed codesample anchor image imagetools insertdatetime link hr textcolor visualblocks nonbreaking fullscreen",
   'menubar': 'view tools table codesample imagetools insert',
 
-  'toolbar': "formatselect | bold italic underline | alignleft aligncenter alignright alignjustify lists numlist bullist code tools emoticons  preview image media  mediaembed pagebreak table codesample anchor insertdatetime link hr forecolor backcolor visualblocks nonbreaking fullscreen" ,
+  'toolbar': "toc formatselect | bold italic underline | alignleft aligncenter alignright alignjustify lists numlist bullist code tools emoticons  preview image media  mediaembed pagebreak table codesample anchor insertdatetime link hr forecolor backcolor visualblocks nonbreaking fullscreen" ,
   'content_css': 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css',
    'width': 'auto',
     'height': 500,
+    'toc_class': 'my-toc',
     
 }
 
