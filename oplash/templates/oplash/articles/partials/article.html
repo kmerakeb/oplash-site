@@ -13,9 +13,9 @@
 
     <div class="card-body">
       <h4 class="card-text"><a class="text-black" href="{{ article.get_absolute_url }}">{{ article.title | truncatechars:55}}</a></h4>
-      <p class="card-text">{{ article.summary | truncatechars:70 }} </p>
+      <p class="card-text">{{ article.summary | truncatechars:170 }} </p>
 
-      <footer class="post-footer d-flex justify-content-between align-items-center" style="margin-top: 30px;">
+      <footer class="post-footer d-flex justify-content-between align-items-center">
         <a class="author d-flex align-items-center flex-nowrap">
           <div class="avater" style="max-width: 30px;
         min-width: 30px;
